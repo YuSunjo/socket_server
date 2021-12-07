@@ -1,5 +1,5 @@
 import {createServer} from "http";
-import {ioServer} from "./ioServer/IoServer";
+import {ioServer} from "../ioServer/IoServer";
 
 class Server {
 
