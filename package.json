@@ -17,6 +17,7 @@
     "@types/redis": "^2.8.32",
     "@types/socket.io": "^3.0.2",
     "express": "^4.17.1",
+    "ioredis": "^4.27.9",
     "redis": "^3.1.2",
     "socket.io": "^4.3.2",
     "ts-node": "^10.4.0",
