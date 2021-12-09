@@ -19,25 +19,37 @@ export const ioServer = () => {
     })
 
     sub.on("message", (channel, message) => {
-        console.log("sdf");
         const object = JSON.parse(message);
         console.log(message)
-        io.to(object.notificationMemberId).emit(object.notificationTemplate, object.boardId, object.commentMemberNickname);
+        io.to(object.notificationMemberId).emit(object.notificationTemplate, object);
     })
 
     // 프론트에서 emit 하면 그에 맞는 이벤트 발생시켜줌
+    // on 그에 해당하는 이벤트 발생
     io.on('connect', (ioSocket) => {
-        console.log(ioSocket.id);
-        console.log("hello");
+        console.log("connect");
         let memberId = ioSocket.handshake.query['memberId'];
         console.log(memberId)
         // @ts-ignore
         ioSocket.join(memberId)
 
-        ioSocket.on("NOTIFICATION", (response) => {
-            io.to(ioSocket.id).emit('NOTIFICATION')
+        ioSocket.on("CREATE_COMMENT", (response) => {
+            console.log("CREATE_COMMENT")
+            console.log(response)
+            io.to(ioSocket.id).emit('CREATE_COMMENT', response)
         })
+
+        ioSocket.on("CREATE_RE_COMMENT", (response) => {
+            console.log("CREATE_COMMENT")
+            console.log(response)
+            io.to(ioSocket.id).emit('CREATE_RE_COMMENT', response)
+        })
+
+        ioSocket.on('disconnect', () => {
+            console.log("disconnect");
+        });
     })
+
 
 
 }
