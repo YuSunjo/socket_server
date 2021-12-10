@@ -1,13 +1,21 @@
 import app from '../server/app';
 import socket from "socket.io";
-import {redisConnect, topic} from "../application/application";
-import redis from "redis";
 import Redis from "ioredis"
 
+export const topic = "socket.io";
+
+export let redisConnect = {
+    host: "3.38.124.11",
+    port: 6379
+}
+
 export const ioServer = () => {
-    const io = new socket.Server(app, {});
-    const sub = new Redis(6379, "3.38.124.11");
-    const pub = new Redis(6379, "3.38.124.11");
+    const io = new socket.Server(app, {
+        cors: {
+            origin: '*',
+        }
+    });
+    const sub = new Redis(redisConnect.port, redisConnect.host);
     console.log(topic)
     sub.subscribe(topic, (err, count) => {
         if (err) {
@@ -49,7 +57,5 @@ export const ioServer = () => {
             console.log("disconnect");
         });
     })
-
-
 
 }
